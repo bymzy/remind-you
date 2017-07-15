@@ -1,0 +1,10 @@
+{
+    "plugins": [
+        {
+            "name": "dict",
+            "desc": "help you remember English words",
+            "fileName": "dict_plugin",
+            "args": "test"
+        }
+    ]
+}
