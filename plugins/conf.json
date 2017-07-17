@@ -4,7 +4,11 @@
             "name": "dict",
             "desc": "help you remember English words",
             "fileName": "dict_plugin",
-            "args": "test"
+            "args": {
+                "port": 6666,
+                "ip": "127.0.0.1",
+                "db": "~/.remind-you/db/dict.db"
+            }
         }
     ]
 }
