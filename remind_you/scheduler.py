@@ -35,7 +35,6 @@ def scheduler_loop():
         process_list.append((plugin, run_plugin(plugin)))
 
     # monitor process 
-
     while True:
         to_add = []
         to_del = []
@@ -45,15 +44,13 @@ def scheduler_loop():
                 to_add.append((proc[0], run_plugin(proc[0])))
                 to_del.append(proc)
 
-        for proc in to_del:    
+        for proc in to_del:
             process_list.remove(proc)
             to_del = []
-                
-        for proc in to_add:    
+
+        for proc in to_add:
             process_list.append(proc)
             to_add = []
 
         time.sleep(2)
-        
-                
 
