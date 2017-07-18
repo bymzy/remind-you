@@ -6,6 +6,8 @@ import daemon
 from scheduler import scheduler_loop
 
 if __name__ == "__main__":
-    with daemon.DaemonContext():
-        scheduler_loop()
+    #with daemon.DaemonContext():
+    #    scheduler_loop()
+    scheduler_loop()
+
 
