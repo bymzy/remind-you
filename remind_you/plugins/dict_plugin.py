@@ -15,6 +15,14 @@ def generate_request(_word, _trans):
     totalLen = 4 + len(trans) + len(word)
     return pack_int(totalLen) + trans + word
 
+def recv_request(cl):
+    tmp = recv_len(cl, 4)
+    wordLen = unpack_int(tmp)
+    data = recv_len(cl, wordLen)
+    trans = unpack_int(data[0:4])
+    word = unpack_str(data[4:])
+    return word, trans
+
 def run(args):
     print 'my pid is: %u , %s ' % (os.getpid(), args)
     port = args.get('port')
@@ -28,11 +36,7 @@ def run(args):
 
     while True:
         cl, addr = sock.accept()
-        tmp = recv_len(cl, 4)
-        wordLen = unpack_int(tmp)
-        data = recv_len(cl, wordLen)
-        trans = unpack_int(data[0:4])
-        word = unpack_str(data[4:])
+        word, trans = recv_request(cl)
         print 'receive word %s , need trans %d: ' % (word, trans)
         cl.close()
 
