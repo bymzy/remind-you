@@ -13,6 +13,7 @@ setup(
     entry_points = {
         'console_scripts': [
             'save_word = remind_you.cmds:save_word_cmd',
+            'remind_you = remind_you.main:run_main'
             ]
     }
 )

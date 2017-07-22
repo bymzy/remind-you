@@ -8,6 +8,7 @@ import logging
 import importlib
 import time
 import os
+from remind_you.plugins.log import Log
 
 CONF_FILE = '/etc/scheduler.conf'
 
@@ -16,32 +17,36 @@ def parse_config(conf):
         data = f.read()
         return json.loads(data)
 
-def run_plugin(plugin):
+def run_plugin(plugin, logFile):
     name = plugin.get('name')
     fileName = plugin.get('fileName')
     desc = plugin.get('desc')
     arg = plugin.get('args')
 
-    module = importlib.import_module('plugins.' + fileName)
-    process = multiprocessing.Process(target=module.run, args=(arg,))
+    module = importlib.import_module('remind_you.plugins.' + fileName)
+    process = multiprocessing.Process(target=module.run, args=(arg, logFile))
     process.start()
     return process
 
 def scheduler_loop():
-    print 'main process pid: %u' % os.getpid()
     conf_dict = parse_config(CONF_FILE)
+    logFileName = conf_dict.get('logFile')
+    print logFileName
+    log = Log(logFileName)
+    log.debug_log('main process pid: %u' % os.getpid())
+
     process_list = []
     for plugin in conf_dict.get('plugins', []):
-        process_list.append((plugin, run_plugin(plugin)))
+        process_list.append((plugin, run_plugin(plugin, logFileName)))
 
-    # monitor process 
+    time.sleep(5)
     while True:
         to_add = []
         to_del = []
         for proc in process_list:
             if not proc[1].is_alive():
                 proc[1].join()
-                to_add.append((proc[0], run_plugin(proc[0])))
+                to_add.append((proc[0], run_plugin(proc[0], logFileName)))
                 to_del.append(proc)
 
         for proc in to_del:
@@ -53,4 +58,3 @@ def scheduler_loop():
             to_add = []
 
         time.sleep(2)
-

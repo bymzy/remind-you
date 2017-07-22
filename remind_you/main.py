@@ -3,11 +3,13 @@
 
 
 import daemon
-from scheduler import scheduler_loop
+from remind_you.scheduler import scheduler_loop
+
+def run_main():
+    with daemon.DaemonContext():
+        scheduler_loop()
 
 if __name__ == "__main__":
-    #with daemon.DaemonContext():
-    #    scheduler_loop()
     scheduler_loop()
 
 

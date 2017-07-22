@@ -8,8 +8,8 @@ import json
 import sys
 import socket
 import argparse
-from util import connect_ip_port, send_data 
-from dict_plugin import generate_request
+from remind_you.plugins.util import connect_ip_port, send_data 
+from remind_you.plugins.dict_plugin import generate_request
 
 CONF = '/etc/scheduler.conf'
 PLUGIN_NAME = 'dict'

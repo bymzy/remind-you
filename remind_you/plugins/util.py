@@ -4,6 +4,8 @@
 
 import struct
 import socket
+import time
+import datetime
 
 def pack_int(val):
     return struct.pack('!I', val)
@@ -41,4 +43,8 @@ def connect_ip_port(ip, port):
         return s
     except Exception, e:
         return None
+
+def get_posix_time():
+    dtime = datetime.datetime.now()
+    return int(time.mktime(dtime.timetuple()))
 
